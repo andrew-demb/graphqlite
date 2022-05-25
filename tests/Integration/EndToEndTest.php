@@ -1904,4 +1904,44 @@ class EndToEndTest extends TestCase
         $this->expectExceptionMessage("Could not set value for property 'TheCodingMachine\GraphQLite\Fixtures\Integration\Models\Post::inaccessible'. Either make the property public or add a public setter for it like this: 'setInaccessible'");
         $result->toArray(DebugFlag::RETHROW_INTERNAL_EXCEPTIONS);
     }
+
+    public function testEndToEndInputEmptyValues(): void
+    {
+        /**
+         * @var Schema $schema
+         */
+        $schema = $this->mainContainer->get(Schema::class);
+
+        $queryString = '
+        mutation {
+            updatePreferences(
+                preferences: {
+                    id: 0,
+                    options: [],
+                    enabled: false,
+                    name: ""
+                }
+            ) {
+                id
+                options
+                enabled
+                name
+            }
+        }
+        ';
+
+        $result = GraphQL::executeQuery(
+            $schema,
+            $queryString
+        );
+
+        $this->assertSame([
+              'updatePreferences' => [
+                  'id' => 0,
+                  'options' => [],
+                  'enabled' => false,
+                  'name' => '',
+              ],
+          ], $this->getSuccessResult($result));
+    }
 }
