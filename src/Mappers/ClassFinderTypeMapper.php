@@ -28,7 +28,7 @@ use function array_reduce;
 use function assert;
 
 /**
- * Analyzes classes and uses the @Type annotation to find the types automatically.
+ * Analyzes classes and uses the #[Type] attribute to find the types automatically.
  */
 class ClassFinderTypeMapper implements TypeMapperInterface
 {
