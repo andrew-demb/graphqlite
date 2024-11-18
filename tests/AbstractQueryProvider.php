@@ -475,6 +475,7 @@ abstract class AbstractQueryProvider extends TestCase
     {
         $finder = new ComposerFinder();
 
+        $hash = md5(implode(',', (array) $namespaces));
         foreach ((array) $namespaces as $namespace) {
             $finder->inNamespace($namespace);
         }
@@ -483,8 +484,6 @@ abstract class AbstractQueryProvider extends TestCase
         $arrayAdapter->setLogger(new ExceptionLogger());
 
         $finder = $finder->withFileFinder(new CachedFileFinder(new DefaultFileFinder(), $arrayAdapter));
-
-        $hash = md5(implode(',', (array) $namespaces));
 
         return new KcsClassFinder($finder, $hash);
     }

@@ -419,12 +419,6 @@ class ClassFinderTypeMapperTest extends AbstractQueryProvider
             },
         ]);
 
-        $typeGenerator = $this->getTypeGenerator();
-        $inputTypeGenerator = $this->getInputTypeGenerator();
-
-        $classFinderComputedCache = $this->getClassFinderComputedCache();
-
-        // todo
         $arrayAdapter = new ArrayAdapter();
         $arrayAdapter->setLogger(new ExceptionLogger());
         $schemaFactory = new SchemaFactory(new Psr16Cache($arrayAdapter), new BasicAutoWiringContainer(new EmptyContainer()));
@@ -432,16 +426,7 @@ class ClassFinderTypeMapperTest extends AbstractQueryProvider
         $schemaFactory->addNamespace('TheCodingMachine\GraphQLite\Fixtures\ClassFinderTypeMapper\Controllers');
         $schemaFactory->addNamespace('TheCodingMachine\GraphQLite\Fixtures\ClassFinderCustomTypeMapper\Controllers');
 
-        $classFinder = $this->getClassFinder([
-//            'TheCodingMachine\GraphQLite\Fixtures\ClassFinderCustomTypeMapper\Controllers',
-            'TheCodingMachine\GraphQLite\Fixtures\ClassFinderCustomTypeMapper\Types',
-        ]);
-        $mapper = new ClassFinderTypeMapper($classFinder, $typeGenerator, $inputTypeGenerator, $this->getInputTypeUtils(), $container, new AnnotationReader(), new NamingStrategy(), $this->getTypeMapper(), $classFinderComputedCache);
-
         // Register the class finder type mapper in your application using the SchemaFactory instance
-//        $schemaFactory->addTypeMapper($mapper);
-
-        // ----
         $schemaFactory->addTypeMapperFactory(new StaticClassListTypeMapperFactory([TestCustomMapperObject::class]));
 
         $schema = $schemaFactory->createSchema();
@@ -469,7 +454,6 @@ class ClassFinderTypeMapperTest extends AbstractQueryProvider
                 'legacyObject' => ['foo' => 42],
                 'customMapperObject' => ['foo' => 42],
             ],
-//            'legacyObject' => ['foo' => 42],
         ], $result->toArray(DebugFlag::RETHROW_INTERNAL_EXCEPTIONS));
     }
 }

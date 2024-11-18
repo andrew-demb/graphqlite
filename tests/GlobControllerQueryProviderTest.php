@@ -42,10 +42,12 @@ class GlobControllerQueryProviderTest extends AbstractQueryProvider
         };
 
         $namespace = 'TheCodingMachine\\GraphQLite\\Fixtures';
+
         $finder = new ComposerFinder();
+
+        $hash = md5($namespace);
         $finder->inNamespace($namespace);
         $finder->filter(static fn (ReflectionClass $class) => $class->getNamespaceName() === $namespace); // Fix for recursive:false
-        $hash = md5($namespace);
 
         $globControllerQueryProvider = new GlobControllerQueryProvider(
             $this->getFieldsBuilder(),

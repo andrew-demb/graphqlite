@@ -101,8 +101,9 @@ class IntegrationTestCase extends TestCase
                     'TheCodingMachine\\GraphQLite\\Fixtures\\Integration\\Controllers',
                 ];
 
-                $hash = md5(implode(',', $namespaces));
                 $composerFinder = new ComposerFinder();
+
+                $hash = md5(implode(',', $namespaces));
                 foreach ($namespaces as $namespace) {
                     $composerFinder->inNamespace($namespace);
                 }

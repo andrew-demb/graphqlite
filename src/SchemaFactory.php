@@ -562,11 +562,10 @@ class SchemaFactory
             $finder = $finder->withFileFinder(new CachedFileFinder(new DefaultFileFinder(), new ArrayAdapter()));
         }
 
+        $hash = md5(implode(',', $this->namespaces));
         foreach ($this->namespaces as $namespace) {
             $finder = $finder->inNamespace($namespace);
         }
-
-        $hash = md5(implode(',', $this->namespaces));
 
         return new KcsClassFinder($finder, $hash);
     }
