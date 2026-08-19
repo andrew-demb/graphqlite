@@ -43,4 +43,9 @@ class GetterSetterType
     {
         throw new \RuntimeException('Should not be called');
     }
+
+    public function hasFive(string $arg = ''): bool
+    {
+        return $arg === 'foo';
+    }
 }

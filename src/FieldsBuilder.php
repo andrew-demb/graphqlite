@@ -51,6 +51,7 @@ use TheCodingMachine\GraphQLite\Types\ArgumentResolver;
 use TheCodingMachine\GraphQLite\Types\MutableObjectType;
 use TheCodingMachine\GraphQLite\Types\TypeResolver;
 use TheCodingMachine\GraphQLite\Utils\DescriptionResolver;
+use TheCodingMachine\GraphQLite\Utils\FieldAccessorPrefixes;
 use TheCodingMachine\GraphQLite\Utils\PropertyAccessor;
 
 use function array_diff_key;
@@ -92,6 +93,7 @@ class FieldsBuilder
         private readonly FieldMiddlewareInterface $fieldMiddleware,
         private readonly InputFieldMiddlewareInterface $inputFieldMiddleware,
         private readonly DescriptionResolver $descriptionResolver = new DescriptionResolver(true),
+        private readonly FieldAccessorPrefixes $fieldAccessorPrefixes = new FieldAccessorPrefixes(),
     )
     {
         $this->typeMapper = new TypeHandler(
@@ -846,7 +848,7 @@ class FieldsBuilder
         if ($reflectionClass->hasMethod($propertyName)) {
             $methodName = $propertyName;
         } else {
-            $methodName = PropertyAccessor::findGetter($reflectionClass->getName(), $propertyName);
+            $methodName = PropertyAccessor::findGetter($reflectionClass->getName(), $propertyName, $this->fieldAccessorPrefixes);
             if (! $methodName) {
                 throw FieldNotFoundException::missingField($reflectionClass->getName(), $propertyName);
             }
